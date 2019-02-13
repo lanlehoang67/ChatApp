@@ -13,11 +13,27 @@ function scrollToBottom(){
     }
 }
 socket.on('connect',function(){
-    console.log('connected to server');
+    var params = $.deparam(window.location.search);
+    socket.emit('join',params,(err)=>{
+        if(err){
+            alert(err);
+            window.location.href = '/';
+        }
+        else{
+            console.log(' no err');
+        }
+    })
 });
 socket.on('disconnect',function(){
     console.log('disconnected from server');
 });  
+socket.on('updateUserList',function(users){
+    var ol = $('<ol></ol>');
+    users.forEach(function(user){
+        ol.append($('<li></li>').text(user));
+    }); 
+    $('#users').html(ol);
+})
 socket.on('newMessage',function(message){
     var formattedTime = moment(message.createdAt).format('h:mm a');
     var template = $('#message-template').html();
@@ -61,7 +77,6 @@ $('#message-form').on('submit',function(e){
     var messageBox = $('[name=message]');
     if(messageBox.val()){
     socket.emit('createMessage',{
-        from: 'User',
         text: messageBox.val()
     },function(){
         messageBox.val('');
