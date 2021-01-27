@@ -10,7 +10,7 @@ const {Users} = require('./utils/users');
 var users = new Users();
 var server = http.createServer(app);
 var io = socketIO.listen(server);
-const port = 80;
+const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
     console.log('new user connected');
@@ -54,6 +54,6 @@ io.on('connection',(socket)=>{
         }
     })
 })
-server.listen(3000, ()=>{
+server.listen(3000,()=>{
     console.log(`started on port 3000`);
 });
