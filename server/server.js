@@ -10,7 +10,13 @@ const {Users} = require('./utils/users');
 var users = new Users();
 var server = http.createServer(app);
 var io = socketIO.listen(server);
+const Chat = require("../models/ChatSchema");
+const connect = require("../dbconnection");
 const port = process.env.PORT || 80;
+const bodyParser = require("body-parser");
+const router = require("../api/messages");
+app.use(bodyParser.json());
+app.use("/chats", router);
 app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
     console.log('new user connected');
@@ -31,7 +37,11 @@ io.on('connection',(socket)=>{
         var user = users.getUser(socket.id);
         if(user && isRealString(message.text)){
         io.to(user.room).emit('newMessage',generateMessage(user.name,message.text)); 
-        
+        connect.then(db => {
+            console.log("connected to db");
+            let chatMessage = new Chat({ message: message.text, sender: user.name});
+            chatMessage.save();
+        })
         }
         callback();
         // socket.broadcast.emit('newMessage',{

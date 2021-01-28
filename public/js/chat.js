@@ -100,3 +100,29 @@ locationButton.on('click',function(){
         alert('unable to fetch location').text('send location');
     })
 });
+(function() {
+    fetch("/chats")
+      .then(data => {
+        return data.json();
+      })
+      .then(json => {
+        json.map(data => {
+        //   let li = document.createElement("li");
+        //   let span = document.createElement("span");
+        //   messages.appendChild(li).append(data.message);
+        //   messages
+        //     .appendChild(span)
+        //     .append("by " + data.sender + ": " + formatTimeAgo(data.createdAt));
+    var li = $('<li></li>');
+    var formattedTime = moment(data.createdAt).format('h:mm a');
+    var template = $('#message-template').html();
+    var html = Mustache.render(template,{
+        text: data.message,
+        from: data.sender,
+        createdAt: formattedTime
+    });
+    $('#messages').append(html);
+        console.log(data)
+        });
+      });
+  })();
