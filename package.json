@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "nodemon server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec npm test"
   },
@@ -19,7 +19,7 @@
     "express": "^4.16.4",
     "moment": "^2.24.0",
     "mongoose": "^5.11.13",
-    "nodemon": "^1.18.9",
+    "nodemon": "^1.19.4",
     "socket.io": "^2.4.1"
   },
   "devDependencies": {

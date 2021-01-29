@@ -7,9 +7,9 @@ const router = express.Router();
 router.get("/",(req, res, next) => {
     res.setHeader("Content-Type", "application/json");
     res.statusCode = 200;
+    console.log(req)
     connectdb.then(db => {
-        console.log('ok')
-        Chats.find({}).then(chat => {
+        Chats.find({room: req.query.room}).then(chat => {
             res.json(chat);
         })
     })

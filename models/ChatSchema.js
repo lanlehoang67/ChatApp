@@ -7,6 +7,9 @@ const chatSchema = new Schema(
         },
         sender: {
             type: String
+        },
+        room: {
+            type: String
         }
     },
     {
